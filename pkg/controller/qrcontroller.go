@@ -16,6 +16,7 @@ func GetQRCodeFromString(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "malformed or no parameter provided",
 		})
+		return
 	}
 
 	png, err := qrcode.Encode(str, qrcode.Medium, 256)
@@ -24,7 +25,7 @@ func GetQRCodeFromString(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "could not generate qr code",
 		})
-
+		return
 	}
 
 	c.Data(http.StatusOK, "image/png", png)
@@ -38,6 +39,7 @@ func GetQRCodeFromB64(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "malformed or no parameter provided",
 		})
+		return
 	}
 
 	decode, err := base64.URLEncoding.DecodeString(b64)
@@ -46,6 +48,7 @@ func GetQRCodeFromB64(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "could not decode base64",
 		})
+		return
 	}
 
 	png, err := qrcode.Encode(string(decode), qrcode.Medium, 256)
@@ -54,7 +57,7 @@ func GetQRCodeFromB64(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "could not generate qr code",
 		})
-
+		return
 	}
 
 	c.Data(http.StatusOK, "image/png", png)
